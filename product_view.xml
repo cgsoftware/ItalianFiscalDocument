@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_search_form_view_stock2" model="ir.ui.view">
+            <field name="name">product.search.stock.form2</field>
+            <field name="model">product.product</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="stock.product_search_form_view_stock"/>
+            <field name="arch" type="xml">
+                   <field name="location_id" position="replace">
+                   </field>
+					<field name="categ_id" position="before">
+                       <field name="location_id" widget="selection" context="{'location': self}" select="1" />
+                       
+                   </field>                   
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,9 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_FiscalDocHeader","fiscaldoc.header","model_fiscaldoc_header",,1,1,1,1
+"access_FiscalDocRighe","fiscaldoc.righe","model_fiscaldoc_righe",,1,1,1,1
+"access_FiscalDocScadenze","fiscaldoc.scadenze","model_fiscaldoc_scadenze",,1,1,1,1
+"access_FiscalDocIva","fiscaldoc.iva","model_fiscaldoc_iva",,1,1,1,1
+"access_fiscaldoc_tipoprogressivi","fiscaldoc.tipoprogressivi","model_fiscaldoc_tipoprogressivi",,1,1,1,1
+"access_fiscaldoc_numeriprogressivi","fiscaldoc.numeriprogressivi","model_fiscaldoc_numeriprogressivi",,1,1,1,1
+"access_fiscaldoc_causalidoc","fiscaldoc.causalidoc","model_fiscaldoc_causalidoc",,1,1,1,1
+"access_fiscaldoc_spedizioni","fiscaldoc.spedizioni","model_fiscaldoc_spedizioni",,1,1,1,1

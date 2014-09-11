@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+       
+        <record id="view_fiscaldoc_form" model="ir.ui.view">
+            <field name="name">fiscaldoc.form</field>
+            <field name="model">fiscaldoc.header</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Documenti di Vendita">
+                    <group col="6" colspan="4">
+                        <field name="tipo_doc" on_change="onchange_tipo_doc(tipo_doc,data_documento,context)" select="1"/>
+                        <field name="data_documento" on_change="onchange_datadoc(tipo_doc,data_documento,progr)" select="1"/>
+                        <field name="progr" on_change="onchange_datadoc(tipo_doc,data_documento,progr)"/>
+                        <field name="numdoc" on_change="onchange_numdoc(tipo_doc,data_documento,progr,numdoc)" select="1"/> 
+                        <field name="name" select="1"/> 
+                                           
+                        <field name="magazzino_id" context="{'location':magazzino_id}" widget="selection"/>
+                        <field name="magazzino_destinazione_id"  widget="selection"/>                        
+                    </group>
+                    <notebook colspan="5">
+                        <page string="Documenti di Vendita">
+                            <field name="partner_id" on_change="onchange_partner_id(partner_id,context)" context="{'partner_id':partner_id, 'default_name':name}" domain="['|',('customer','=',True),('supplier','=',True)]"/>
+                            <field domain="[('parent_id','=',partner_id)]" name="partner_indfat_id" />
+                            <field domain="[('parent_id','=',partner_id)]" name="partner_indcons_id" />
+                            <field domain="[('type','=','sale')]" name="listino_id" />
+                           <field colspan="4" name="righe_articoli" nolabel="1"  attrs="{'readonly':[('differita_id','!=',False)]}">
+                                <form string="Righe Dcumento">
+                                    <notebook>
+                                        <page string="Dettaglio Righe">
+                                            <field  name="product_id" 
+                                                colspan="4"
+                                                context="{'location':parent.magazzino_id}"
+                                                on_change = "onchange_articolo(product_id,parent.listino_id,product_uom_qty,parent.partner_id,parent.data_documento,product_uom,parent.magazzino_id)"                                                                     
+                                            />
+                                            context="{'location':parent.magazzino_id}"  
+                                            <field name="descrizione_riga" colspan="4" />
+                                            <newline/>
+                                            <field name="product_uom_qty"
+                                            		context="{'location':parent.magazzino_id}"  
+                                            		on_change="on_change_qty(product_id,parent.listino_id,product_uom_qty,parent.partner_id,product_uom,parent.data_documento,parent.magazzino_id)" 
+                                            />
+                                              context="partner_id=parent.partner_id,quantity=product_uom_qty,pricelist=parent.pricelist_id,shop=parent.shop_id,uom=product_uom" 
+                                            <field name="product_uom"/>
+                                            <newline/>
+                                            <field name="product_prezzo_unitario" on_change="on_change_prezzo(product_prezzo_unitario,discount_riga,product_uom_qty)"/>
+                                            <field name="sconti_riga" on_change="on_change_strSconti(sconti_riga,product_prezzo_unitario,product_uom_qty)"/>
+                                            <field name="discount_riga" on_change="on_change_prezzo(product_prezzo_unitario,discount_riga,product_uom_qty)" />
+                                            <field name="prezzo_netto"  />
+                                            <field name="totale_riga"   />
+                                            <field name="flag_omaggi" 
+                                            	on_change="onchange_flag(product_id,parent.listino_id,product_uom_qty,parent.partner_id,parent.data_documento, product_uom, flag_omaggi)"/>
+                                            <field name="perc_provv" />                                            
+                                            <field name="contropartita" />
+                                            <field name="codice_iva"  domain="['|',('type_tax_use','=','sale'),('type_tax_use','=','all')]"  />                                             
+                                            <newline/>
+                                        </page>
+                                        <page string="Altri Dati">
+                                            <field name="move_ids" />
+                                            <newline></newline>
+                                            <field name="order_line_id" />                                                                                         
+                                        </page>
+                                    </notebook>
+                                </form>
+                                <tree string="Righe Documento">
+                                            <field  name="product_id" colspan="4" context="{'location':parent.magazzino_id}" on_change = "onchange_articolo(product_id,parent.listino_id,product_uom_qty,parent.partner_id,parent.data_documento,product_uom,parent.magazzino_id)" /> 
+                                            <field name="descrizione_riga" colspan="4" />
+                                            <field name="product_uom_qty" context="{'location':parent.magazzino_id}"  on_change="on_change_qty(product_id,parent.listino_id,product_uom_qty,parent.partner_id,product_uom,parent.data_documento,parent.magazzino_id)" />
+                                            <field name="product_uom"/>
+                                            <field name="product_prezzo_unitario" on_change="on_change_prezzo(product_prezzo_unitario,discount_riga,product_uom_qty)"/>
+                                            <field name="sconti_riga" on_change="on_change_strSconti(sconti_riga,product_prezzo_unitario,product_uom_qty)"/>
+                                            <field name="discount_riga" on_change="on_change_prezzo(product_prezzo_unitario,discount_riga,product_uom_qty)" />
+                                            <field name="prezzo_netto"  />
+                                            <field name="totale_riga"   />
+                                            <field name="flag_omaggi" on_change="onchange_flag(product_id,parent.listino_id,product_uom_qty,parent.partner_id,parent.data_documento, product_uom, flag_omaggi)"/>
+                                            <field name="perc_provv" />                                            
+                                            <field name="contropartita" />
+                                            <field name="codice_iva" domain="['|',('type_tax_use','=','sale'),('type_tax_use','=','all')]" />                                             
+
+<!--    
+
+                                    <field colspan="1" name="product_id" 
+                                     on_change = "onchange_articolo(product_id,parent.listino_id,product_uom_qty,parent.partner_id,parent.data_documento,product_uom,parent.magazzino_id)"/>
+
+                                    <field colspan="1" name="descrizione_riga"/>                                  
+                                    <field name="product_uom_qty" string="Quantità" context="{'location':parent.magazzino_id}"   on_change="on_change_qty(product_id,parent.listino_id,product_uom_qty,parent.partner_id,product_uom,parent.data_documento,parent.magazzino_id)"/>
+                                    <field name="product_uom" string="UoM"/>
+                                    <field name="product_prezzo_unitario" on_change="on_change_prezzo(product_prezzo_unitario,discount_riga,product_uom_qty)" />
+                                    <field name="discount_riga" on_change="on_change_prezzo(product_prezzo_unitario,discount_riga,product_uom_qty)" />                                  
+                                    <field name="prezzo_netto" />
+                                    <field name="totale_riga" />
+-->
+                                </tree>
+                            </field>
+                            <newline/>
+                            <group col="13" colspan="10">
+                                <field name="totale_merce"/>
+                                <field name="totale_imponibile"/>                                  
+                                <field name="totale_imposta"/>
+                                <field name="totale_documento"/>   
+                                <newline></newline>
+                                <field name="totale_acconti" string="Importo Incassato"/>
+                                <field name="totale_abbuoni" string="Abbuono"/>   
+                                <field name="totale_pagare" />                              
+                                
+                          </group>
+                            <group col="13" colspan="4">
+                             </group>
+                        </page>
+                        <page string="Altri dati"  attrs="{'readonly':[('differita_id','!=',False)]}" >
+                            <group col="6" string="Dati Partner" colspan="4">
+                                                        
+                                <field name="pagamento_id" on_change="calcola_spese_inc(pagamento_id)"/>   
+                                <field name="sconto_pagamento"/>   
+                                <newline/>
+                                <field name="str_sconto_partner"/>   
+                                <field name="sconto_partner"/>  
+                                <field name="agente"/>                                
+                                <group col="6" string="Dati Banche" colspan="4">  
+                                    <field name="banca_patner"/>   
+                                    <field name="banca_azienda"/>   
+                                    <field name="valuta"/>                             
+                                </group>
+                            </group>
+                            <group col="6" string="Altre Spese e Importi" colspan="4">
+<!--                             
+                                <field name="totale_acconti" string="Importo Incassato"/>
+                                <field name="totale_abbuoni" string="Abbuono"/> 
+                                 -->   
+                                <field name="spese_incasso"/>   
+                                
+                                <field name="spese_imballo"/>
+                                <newline></newline>   
+                                <field name="spese_trasporto"/>  
+                                <field name="totale_bolli"/>                                  
+                              
+                            </group>
+                            <group col="6" string="Dati Spedizione" colspan="4">
+                                <field name="spedizione"/>   
+                                <field name="vettore"/>   
+                                <newline/>
+                                <field name="porto_id"/>   
+                                <field name="aspetto_esteriore_id"/>   
+                                <field name="causale_del_trasporto_id"/>   
+                                <newline/>                                
+                                <field name="totale_colli"/>   
+                                <field name="totale_peso"/>   
+                                <field name="data_trasporto"/>   
+                                <field name="ora_trasporto"/> 
+                                <newline/> 
+                                <field name="note_di_trasporto" colspan="4"/>   
+                            </group>
+                        </page>
+                        <page string="Contabili/Scadenze">
+                             
+                                <separator colspan="4" string="Totali Iva"/>
+                            <field colspan="4" mode="tree" readonly="True" name="righe_totali_iva" nolabel="1" >                            
+                                <tree string="Righe Castelletto Iva">
+                                    <field colspan="1" name="codice_iva"  />
+                                    <field colspan="1" name="imponibile"/>                                  
+                                    <field name="imposta"  label="Totale Imposta"/>
+                                </tree>    
+                            </field>             
+                            <separator colspan="4" string="Scadenze"/>
+                            <field colspan="4" mode="tree" readonly="True" name="righe_scadenze" nolabel="1" >                            
+                                <tree string="Elenco Scadenze">
+                                    <field colspan="1" name="data_scadenza"/>    
+                                    <field colspan="1" name="tipo_scadenza"  />                            
+                                    <field name="importo_scadenza"  />
+                                </tree>    
+                            </field>      
+                            <newline></newline>
+                            <button name="ricrea_scad"  string="Ricalcola Scadenze" type="object" icon="gtk-execute"/>
+                            
+                      </page>
+                        <page string="History">
+                            <field name='differita_id' readonly="True"/> 
+                            <field name='doc_prog' readonly="False"/> 
+                             
+                       </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        
+
+        <record id="view_fiscaldoc_tree" model="ir.ui.view">
+            <field name="name">fiscaldoc.tree</field>
+            <field name="model">fiscaldoc.header</field>
+            <field name="type">tree</field>
+         <!--   <field name="priority">2</field>  -->
+            <field name="arch" type="xml">
+                <tree string="Documenti di Vendita "  colors="red:differita_id != False" >
+                    <!-- colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')" -->
+                    <field name="name"/>
+                    <field name="data_documento"/>
+                    <field name="tipo_doc"/>
+                    <field name="partner_id"/>
+                    <field name="differita_id"/>
+                    
+                 </tree>
+            </field>
+        </record>
+        
+        <record id="view_fiscaldoc_filter" model="ir.ui.view">
+            <field name="name">fiscaldoc.select</field>
+            <field name="model">fiscaldoc.header</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Ricerca Documenti di Vendita">
+                	<field name="name" select="1"/>
+                	<field name="partner_id" select="1"/>
+                	<field name="tipo_doc" select="1"/>
+                	<field name="data_documento" select="1"/>
+               		<field name="agente" select="1" string="Creatore">
+                	        <filter domain="[('agente','=',uid)]" help="My Sale Orders" icon="terp-personal"/>
+                	</field>
+                	<newline/>
+                	 <newline/>
+                    <group expand="0" string="Raggruppa per..." colspan="11" col="11" groups="base.group_extended">
+                        <filter string="Cliente" icon="terp-personal" domain="[]" context="{'group_by':'partner_id'}"/>
+                        
+                          <filter string="Data Documento" icon="terp-go-month" domain="[]" context="{'group_by':'data_documento'}"/>
+                    	<filter string="Tipo Documento" icon="terp-go-month" domain="[]" context="{'group_by':'tipo_doc'}"/>
+                    </group>
+                    
+                	
+                	
+                </search>
+           </field>
+          </record>
+           
+           <record id="action_fiscaldoc_form" model="ir.actions.act_window">
+            <field name="name">Documenti di Vendita</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fiscaldoc.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fiscaldoc_filter"/>
+            <field name="context">{"search_default_agente":uid}</field>
+            <!--   
+            
+            <field name="context">{"search_default_user_id":uid}</field>
+            <field name="help">Sales Orders help you manage quotations and orders from your customers. OpenERP suggests that you start by creating a quotation. Once it is confirmed, the quotation will be converted into a Sales Order. OpenERP can handle several types of products so that a sales order may trigger tasks, delivery orders, manufacturing orders, purchases and so on. Based on the configuration of the sales order, a draft invoice will be generated so that you just have to confirm it when you want to bill your customer.</field>
+            -->
+        </record>
+          
+   <menuitem action="action_fiscaldoc_form" id="menu_fiscaldoc_sale" parent="base.menu_sales" sequence="4" groups="base.group_sale_salesman,base.group_sale_manager"/>
+   
+ 
+   	       <record model="ir.ui.view" id="view_order_form_spetra">
+            <field name="name">view.order.form.spetra</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_term" position="after" > 
+                    <field name='spese_di_trasporto' />
+                   
+                
+                </field>
+                  
+            </field>
+           </record>
+           
+        <record model="ir.ui.view" id="res_partner_datifido_form">
+            <field name="name">res.partner.datifido.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+                <field name="arch" type="xml">
+	                <notebook position="inside">        
+				  <page string="Fido Crediti e Pagamento ">
+	                		  <group colspan="4" >
+	                				<field name="meseprimoescluso" />
+	                				<field name="mesesecondoescluso" />
+	                				<field name="giornoescluso" />	 
+	                				<newline></newline>
+	              					<field name="credagenti" />
+	              					<field name="bloccato" />
+	                				<field name="moratoria" />	      
+	                				<newline></newline>
+	              					<field name="str_sconto_partner" />
+	                				<field name="sconto_partner" />	      
+	                					                				
+	                		</group> 
+	                				
+		  			</page>
+			</notebook>
+
+		  </field>
+        </record>
+                      
+        <record id="res_partner_fattura_singola" model="ir.ui.view">
+            <field name="name">res.partner.fattonce</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="l10n_it_sale.view_partner_form_inherit_shipping_conditions"/>
+            <field name="arch" type="xml">
+                <field name="transportation_reason_id" position="after">
+                    <field name="fatt_once"/>
+                </field>
+            </field>
+        </record>
+ 
+    </data>
+    
+    
+ </openerp>

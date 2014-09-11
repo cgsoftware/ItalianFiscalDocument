@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Tree View  Numeri Progressivi Documenti -->
+        
+        <record id="fiscaldoc_progr_view_tree" model="ir.ui.view">
+            <field name="name">fiscaldoc.progr.tree</field>
+            <field name="model">fiscaldoc.tipoprogressivi</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Progressivi Fiscali Doc. di Vendita">
+                    <field name="name" select="1"/>
+                    <field name="descr_progr" select="1"/>
+                    <field name="tipo_doc_progr" select="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="fiscaldoc_progr_view_form" model="ir.ui.view">
+            <field name="name">fiscaldoc.progr.form</field>
+            <field name="model">fiscaldoc.tipoprogressivi</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Progressivi Fiscali Doc. di Vendita">
+                    <group col="6" colspan="4">
+                    <field name="name"/>
+                    <field name="descr_progr" />
+                    <newline/>
+                    <field name="tipo_doc_progr" />
+                    <field name="registro_iva"/>
+                   </group>     
+                    <newline/>
+                       <separator string="Ultimi Numeri Utilizzati  suddivisi per Anno" colspan="4"/>
+                    <field name="ids_ultimi_numeri" nolabel="1" mode="form,tree" string="Ultimi Numeri Utilizzati">
+                        <tree editable="top"  string="Ultimi Numeri Utilizzati">
+                            <field name="anno" size='150' />
+                            <field name="ultimo_numero" size='10'/>
+                            <field name="data_ultimo_numero" />	                				
+                        </tree>
+                        <form>
+                            <field name="anno" size='150' />
+                            <field name="ultimo_numero" size='10'/>
+                            <field name="data_ultimo_numero" />	                   				
+                        </form>
+                    </field>                    
+                </form>
+            </field>
+        </record>
+      
+        <!--  Action Numeri Progressivi Documenti -->
+      
+        <record id="action_progressivi" model="ir.actions.act_window">
+            <field name="name">Tipo Progressivi</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fiscaldoc.tipoprogressivi</field>
+		<field name="view_mode">tree,form</field>
+        </record>
+        
+        <!--  Menù Numeri Progressivi Documenti -->
+
+        <menuitem action="action_progressivi" id="menu_progressivi_tree" parent="base.menu_sale_config_sales"/>
+        
+        <!-- View  Causali Documenti -->
+        
+        <record id="fiscaldoc_causali_view_tree" model="ir.ui.view">
+            <field name="name">fiscaldoc.causali.tree</field>
+            <field name="model">fiscaldoc.causalidoc</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Causali Doc. di Vendita">
+                    <field name="name" select="1"/>
+                    <field name="descrizione" select="1"/>
+                    <field name="tipo_operazione" />
+                    <field name="tipo_documento" />
+                    <field name="progr_id_default" />
+                    <field name="deposito_default" />                  
+                </tree>
+            </field>
+        </record>
+        
+        <record id="fiscaldoc_causali_view_form" model="ir.ui.view">
+            
+            <field name="name">fiscaldoc.causali.form</field>
+            <field name="model">fiscaldoc.causalidoc</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Causali Doc. di Vendita">
+                    <field name="name" select="1"/>
+                    <field name="descrizione" select="1"/>
+                    <field name="tipo_operazione" />
+                    <field name="tipo_azione" />                    
+                    <newline/>
+                    <field name="tipo_documento" />
+                    <field name="flag_magazzino" />
+					<field name="flag_fatturabile" />                                                 
+                    <field name="progr_id_default" />
+                    <field name="causale_del_trasporto_id" />                  
+                    <newline/>                                 
+                    <field name="flag_contabile" />                  
+                    <field name="tipo_modulo_stampa" />                  
+                    <field name="numero_copie_in_stampa" />                  
+                    <field name="deposito_destinazione_default" />                  
+                    <field name="deposito_default" />             
+                </form>
+            </field>
+        </record>     
+        
+        <!--  Action Numeri Progressivi Documenti -->
+        
+        <record id="action_causali" model="ir.actions.act_window">
+            <field name="name">Causali Documenti di Vendita</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fiscaldoc.causalidoc</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!--  Menù Causali Documenti -->
+        
+        <menuitem action="action_causali" id="menu_causalidoc_tree" parent="base.menu_sale_config_sales"/>
+
+        <!-- View  Spedizioni -->
+        
+        <record id="fiscaldoc_spedizioni_tree" model="ir.ui.view">
+            <field name="name">fiscaldoc.spedizioni.tree</field>
+            <field name="model">fiscaldoc.spedizioni</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Metodo di Spedizione">
+                    <field name="name" select="1"/>        
+                </tree>
+            </field>
+        </record>
+        
+        <record id="fiscaldoc_spedizioni_view_form" model="ir.ui.view">
+            
+            <field name="name">fiscaldoc.spedizioni.form</field>
+            <field name="model">fiscaldoc.spedizioni</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Causali Doc. di Vendita">
+                    <field name="name" select="1"/>
+                </form>
+            </field>
+        </record>     
+        
+        <!--  Action Spedizioni Documenti -->
+        
+        <record id="action_spedizioni" model="ir.actions.act_window">
+            <field name="name">Mezzi di Trasporto</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fiscaldoc.spedizioni</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!--  Menù Spedizioni -->
+        
+        <menuitem action="action_spedizioni" id="menu_spedizioni_tree" parent="base.menu_sale_config_sales"/>
+
+        <!--  Variazione gestione pagamenti  -->
+        
+        <record model="ir.ui.view" id="view_payment_term_form2">
+            <field name="name">account.payment.term.form2</field>
+            <field name="model">account.payment.term</field>
+            <field name="inherit_id" ref="account.view_payment_term_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                	<newline/>
+                    <field name="sconto"/>	
+                    <field name="conto_cassa_banca"/>	                    
+                </field>
+             </field>
+         </record>
+
+        <record model="ir.ui.view" id="view_payment_term_line_form2">
+            <field name="name">account.payment.term.line.form2</field>
+            <field name="model">account.payment.term.line</field>
+            <field name="inherit_id" ref="account.view_payment_term_line_form"/>
+            <field name="arch" type="xml">
+                <field name="sequence" position="after">
+                    <newline/>                  
+                    <field name="tipo_scadenza"/>	
+                    <field name="costo_scadenza"/>	
+                </field>
+            </field>
+        </record>
+        
+        <!--  Variazione gestione banche  -->
+        
+        <record model="ir.ui.view" id="view_res_bank_form2">
+            <field name="name">res.bank.form2</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+                <field name="bic" position="after">
+                    <newline/>                  
+                    <field name="codice_abi" select="1"/>	
+                    <field name="codice_cab" select="1"/>	
+                </field>
+                <field name="city" position="after">
+                    <newline/>                  
+                    <field name="province" select="2"/>	
+                    <field name="region" />	
+                </field>                
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_partner_bank_form2">
+            <field name="name">res.partner.bank.form2</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="acc_number" position="after">
+                    <newline/>                  
+                    <field name="codice_iban" />	
+                    <field name="codice_cin" />	
+                </field>     
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_partner_bank_tree2">
+            <field name="name">res.partner.bank.tree2</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/notebook/page/field[@name='bank_ids']/tree/field[@name='acc_number']" position="after">                 
+                    <field name="codice_iban" />	
+                    <field name="codice_cin" />	
+                </xpath>     
+            </field>
+        </record>        
+        
+        
+        <record model="ir.ui.view" id="view_company_fiscaldoc_form">
+            <field name="name">res.company.fiscaldoc.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+            <notebook position="inside" >
+               <page string="Vendite" >
+                    <field name="civa_spe_inc"/>    
+                    <field name="civa_spe_imb"/>    
+                    <field name="civa_spe_tra"/>
+                    <field name="civa_fc"/> 
+                    <field name="caudoc_evao"/> 
+                    <field name="civa_product_sale"/> 
+                    <field name="civa_product_purchase"/> 
+                    <field name="art_des_ddt" domain="[('type','=',''service'')]" />
+                    <field name="art_des_ord" domain="[('type','=',''service'')]" />
+                    <field name="flag_no_neg"/>                     
+                    <newline/>
+                 </page>
+
+                </notebook>
+            </field>
+        </record>  
+
+        <record model="ir.ui.view" id="vview_country_form2">
+            <field name="name">res.country.form2</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <newline/>                  
+		    <field name="flag_ue" />
+		</field>
+	    </field>
+	</record>
+
+
+</data>
+    
+    
+</openerp>

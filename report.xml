@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<openerp>
+<data >
+
+	<record id="report_fattura_diff" model="ir.actions.report.xml">
+        <field name="name">Fattura Differita</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">italianfiscaldoc.header</field>
+        <field name="report_name">fattdiff</field>
+        <field name="report_rml">ItalianFiscalDocument/report/fattdiff.jrxml</field>
+        <field name="report_type">pdf</field>
+        <field name="jasper_report">True</field>
+        <field name="jasper_output">pdf</field>
+	</record>
+	
+	<record id="repor_ddt" model="ir.actions.report.xml">
+		<field name="name">DDT</field>
+		<field name="type">ir.actions.report.xml</field>
+		<field name="model">italianfiscaldoc.header</field>
+		<field name="report_name">ddt</field>
+		<field name="report_rml">ItalianFiscalDocument/report/ddt.jrxml</field>
+		<field name="report_type">pdf</field>
+        <field name="jasper_report">True</field>
+        <field name="jasper_output">pdf</field>	
+	</record>
+ </data>
+</openerp>
